@@ -1,0 +1,98 @@
+#include <iostream>
+#include <fstream>
+#include <windows.h>
+#include <time.h>
+#include <string>
+#include <string.h>
+#include <cstring>
+#include <stdio.h>
+
+using namespace std;
+
+void add(int**& mass, int size, int new_size)
+{
+	int** tmp = new int*[size];
+	for (int i = 0; i < size; i++)
+	{
+		tmp[i] = new int[size];
+	}
+
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			tmp[i][j] = mass[i][j];
+		}
+	}
+
+	for (int i = 0; i < size; i++)
+	{
+		delete [] mass[i];
+	}
+	delete[] mass;
+
+	mass = new int*[new_size];
+	for (int i = 0; i < new_size; i++)
+	{
+		mass[i] = new int[new_size];
+	}
+
+	for (int i = 0; i < new_size; i++)
+	{
+		for (int j = 0; j < new_size; j++)
+		{
+			if (i < size)
+			{
+				if (j < size)
+					mass[i][j] = tmp[i][j];
+				else
+					mass[i][j] = rand() % 55;
+			}
+			else
+				mass[i][j] = rand() % 55;
+		}
+	}
+}
+
+int main()
+{
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	srand(time(NULL));
+
+	int size = 3;
+	int** mass = new int*[size];
+	for (int i = 0; i < size; i++)
+	{
+		mass[i] = new int[size];
+	}
+	int count = 1;
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			mass[i][j] = count++;
+		}
+		count = 1;
+	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			cout << mass[i][j] << " ";
+		}
+		cout << endl;
+	}
+	cout << endl << endl;
+
+	add(mass, 3, 5);
+	for (int i = 0; i < 5; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			cout << mass[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
